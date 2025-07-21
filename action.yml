@@ -72,6 +72,14 @@ inputs:
       all other events. `auto` is the default value.
     required: false
     default: auto
+  custom-header:
+    description: Optional custom header for PR comments
+    required: false
+    default: pr-preview
+  custom-message-suffix:
+    description: Optional string to append to the deployment comment
+    required: false
+    default: ""
 
 outputs:
   deployment-url:
@@ -151,7 +159,7 @@ runs:
       if: env.action == 'deploy' && env.deployment_status == 'success'
       uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31 # v2.9.0
       with:
-        header: pr-preview
+        header: ${{ inputs.custom-header }}
         message: "\
           [PR Preview Action]\
           (${{ github.server_url }}/${{ env.actionrepo }})
@@ -161,6 +169,8 @@ runs:
 
           :rocket: Deployed preview to
           https://${{ env.pagesurl }}/${{ env.targetdir }}/
+          
+          ${{ inputs.custom-message-suffix }}
 
           on branch [`${{ inputs.preview-branch }}`](\
           ${{ github.server_url }}/${{ env.deployrepo }}\
@@ -185,7 +195,7 @@ runs:
       if: env.action == 'remove' && env.deployment_status == 'success'
       uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31 # v2.9.0
       with:
-        header: pr-preview
+        header: ${{ inputs.custom-header }}
         message: "\
           [PR Preview Action]\
           (${{ github.server_url }}/${{ env.actionrepo }})
