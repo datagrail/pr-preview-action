@@ -53,7 +53,7 @@ inputs:
   custom-url:
     description: Custom pages URL
     required: false
-    default: pr-preview
+    default: ""
   action:
     description: >
       Determines what this action will do when it is executed. Supported
@@ -75,7 +75,7 @@ inputs:
   custom-header:
     description: Optional custom header for PR comments
     required: false
-    default: ""
+    default: pr-preview
   custom-message-suffix:
     description: Optional string to append to the deployment comment
     required: false
