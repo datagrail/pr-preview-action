@@ -162,10 +162,8 @@ runs:
         header: ${{ inputs.custom-header }}
         message: |
           [:rocket: PR Preview Site](https://${{ env.pagesurl }}/${{ env.targetdir }})
-          <br><br>
           ${{ inputs.custom-message-suffix }}
-          <br><br>
-          Preview will be ready in about _5 minutes_ when the [GitHub Pages deployment](${{ github.server_url }}/${{ env.deployrepo }}/deployments) is complete. <br><br> </h6>
+          _Preview will be ready in about **5 minutes** when the [GitHub Pages deployment](${{ github.server_url }}/${{ env.deployrepo }}/deployments) is complete._
 
     - name: Remove preview directory
       if: env.action == 'remove'
