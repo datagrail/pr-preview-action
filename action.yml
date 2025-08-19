@@ -161,11 +161,11 @@ runs:
       with:
         header: ${{ inputs.custom-header }}
         message: |
-          [PR Preview Action](${{ github.server_url }}/${{ env.actionrepo }}) ${{ env.action_version }}
-          :---:
-          | <p></p> :rocket: View preview at <br> https://${{ env.pagesurl }}/${{ env.targetdir }}/ <br><br>
-          | ${{ inputs.custom-message-suffix }} <br><br>
-          | <h6>Built to branch [`${{ inputs.preview-branch }}`](${{ github.server_url }}/${{ env.deployrepo }}/tree/${{ inputs.preview-branch }}) at ${{ env.datetime }}. <br> Preview will be ready when the [GitHub Pages deployment](${{ github.server_url }}/${{ env.deployrepo }}/deployments) is complete. <br><br> </h6>
+          [:rocket: PR Preview Site](https://${{ env.pagesurl }}/${{ env.targetdir }})
+          <br><br>
+          ${{ inputs.custom-message-suffix }}
+          <br><br>
+          Preview will be ready in about _5 minutes_ when the [GitHub Pages deployment](${{ github.server_url }}/${{ env.deployrepo }}/deployments) is complete. <br><br> </h6>
 
     - name: Remove preview directory
       if: env.action == 'remove'
