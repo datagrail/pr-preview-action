@@ -155,16 +155,27 @@ runs:
       run: echo "url=https://${{ env.pagesurl }}/${{ env.targetdir }}/"  >> $GITHUB_OUTPUT
       shell: bash
 
+    - name: Prepare PR comment variables
+      run: |
+        custom_header="${{ inputs.custom-header }}"
+        if [ -n "$custom_header" ]; then
+          echo "comment_link_text=:rocket: PR Preview Site - $custom_header" >> "$GITHUB_ENV"
+        else
+          echo "comment_link_text=:rocket: PR Preview Site" >> "$GITHUB_ENV"
+        fi
+        echo "comment_url=https://${{ env.pagesurl }}/${{ env.targetdir }}" >> "$GITHUB_ENV"
+      shell: bash
+
     - name: Leave a comment after deployment
       if: env.action == 'deploy' && env.deployment_status == 'success'
       uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31 # v2.9.0
       with:
         header: ${{ inputs.custom-header }}
         message: |
-          [:rocket: PR Preview Site](https://${{ env.pagesurl }}/${{ env.targetdir }})
-          
+          [${{ env.comment_link_text }}](${{ env.comment_url }})
+
           ${{ inputs.custom-message-suffix }}
-          
+
           _Preview will be ready in about **5 minutes** when the [GitHub Pages deployment](${{ github.server_url }}/${{ env.deployrepo }}/deployments) is complete._
 
     - name: Remove preview directory
