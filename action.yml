@@ -162,7 +162,9 @@ runs:
         header: ${{ inputs.custom-header }}
         message: |
           [:rocket: PR Preview Site](https://${{ env.pagesurl }}/${{ env.targetdir }})
+          
           ${{ inputs.custom-message-suffix }}
+          
           _Preview will be ready in about **5 minutes** when the [GitHub Pages deployment](${{ github.server_url }}/${{ env.deployrepo }}/deployments) is complete._
 
     - name: Remove preview directory
