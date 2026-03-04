@@ -13,6 +13,7 @@ action_start_time=${7:?missing action_start_time}
 deployment_action=${8:?missing deployment_action}
 qr_code_provider=${9:-} # falsy qr code provider means no QR code
 custom_message_suffix=${10:-} # optional custom message suffix for deploy comments
+custom_header=${11:-} # optional custom header text for the preview link
 
 if [ "$qr_code_provider" = "true" ]; then
     # Default to builtin provider
@@ -35,10 +36,18 @@ if [ "$deployment_action" = "deploy" ]; then
         custom_suffix_line="| ${custom_message_suffix}"
     fi
 
+    # When custom_header is set, use a named link format; otherwise use the default
+    if [ -n "$custom_header" ]; then
+        link_text=":rocket: PR Preview Site - ${custom_header}"
+        preview_link="| <p>${qr_code}</p> [${link_text}](${preview_url})"
+    else
+        preview_link="| <p>${qr_code}</p> :rocket: View preview at <br> ${preview_url} <br><br>"
+    fi
+
     cat << EOF
 [PR Preview Action](https://github.com/${action_repository}) ${action_version}
 :---:
-| <p>$qr_code</p> :rocket: View preview at <br> ${preview_url} <br><br>
+${preview_link}
 ${custom_suffix_line}
 | <h6>Built to branch [\`${preview_branch}\`](${server_url}/${deploy_repository}/tree/${preview_branch}) at ${action_start_time}. <br> Preview will be ready when the [GitHub Pages deployment](${server_url}/${deploy_repository}/deployments) is complete. <br><br> </h6>
 EOF
