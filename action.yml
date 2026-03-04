@@ -142,13 +142,14 @@ runs:
       uses: JamesIves/github-pages-deploy-action@65b5dfd4f5bcd3a7403bbc2959c144256167464e # v4.5.0
       with:
         token: ${{ env.token }}
-        ssh-key: ${{ inputs.ssh-key }}        
+        ssh-key: ${{ inputs.ssh-key }}
         repository-name: ${{ env.deployrepo }}
         branch: ${{ inputs.preview-branch }}
         folder: ${{ inputs.source-dir }}
         target-folder: ${{ env.targetdir }}
         commit-message: Deploy preview for PR ${{ env.pr }} 🛫
-        force: false
+        single-commit: true
+        force: true
 
     - name: Expose deployment URL
       id: url
@@ -189,7 +190,8 @@ runs:
         folder: ${{ env.emptydir }}
         target-folder: ${{ env.targetdir }}
         commit-message: Remove preview for PR ${{ env.pr }} 🛬
-        force: false
+        single-commit: true
+        force: true
 
     - name: Leave a comment after removal
       if: env.action == 'remove' && env.deployment_status == 'success'
