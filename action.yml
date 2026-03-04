@@ -100,6 +100,16 @@ inputs:
 
         required: false
         default: auto
+    comment-header:
+        description: >
+            Custom identifier for the sticky PR comment. When set, also customizes the deploy comment link text to include the header value (e.g. ":rocket: PR Preview Site - <header>"). Useful for distinguishing comments when multiple preview actions run on the same PR.
+        required: false
+        default: ""
+    comment-message-suffix:
+        description: >
+            Optional text to append to the deployment comment body, rendered as an additional line below the preview link.
+        required: false
+        default: ""
 
 outputs:
     deployment-action:
@@ -202,7 +212,9 @@ runs:
                 "${{ inputs.deploy-repository }}" \
                 "${{ env.action_start_time }}" \
                 "deploy" \
-                "${{ inputs.qr-code }}")
+                "${{ inputs.qr-code }}" \
+                "${{ inputs.comment-message-suffix }}" \
+                "${{ inputs.comment-header }}")
               {
                 echo "content<<EOF"
                 echo "$CONTENT"
@@ -218,7 +230,7 @@ runs:
               steps.deploy-comment.outcome == 'success'
           uses: marocchino/sticky-pull-request-comment@67d0dec7b07ed060a405f9b2a64b8ab319fdd7db # v2.9.2
           with:
-              header: pr-preview
+              header: ${{ inputs.comment-header || 'pr-preview' }}
               message: ${{ steps.deploy-comment.outputs.content }}
 
         # REMOVAL
@@ -289,5 +301,5 @@ runs:
               steps.remove-comment.outcome == 'success'
           uses: marocchino/sticky-pull-request-comment@67d0dec7b07ed060a405f9b2a64b8ab319fdd7db # v2.9.2
           with:
-              header: pr-preview
+              header: ${{ inputs.comment-header || 'pr-preview' }}
               message: ${{ steps.remove-comment.outputs.content }}

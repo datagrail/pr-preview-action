@@ -98,3 +98,85 @@ cat >&2 "$comment_file"
 echo >&2 "==============================="
 
 assert_file_contains "$comment_file" "qr.rossjrw.com"
+
+echo >&2 "test comment: deployment with comment-header"
+echo >&2 "==============================="
+bash lib/generate-comment.sh \
+    "$action_repository" \
+    "$action_version" \
+    "$preview_url" \
+    "$preview_branch" \
+    "$server_url" \
+    "$deployment_repository" \
+    "$action_start_time" \
+    "deploy" \
+    "" \
+    "" \
+    "My Partner" \
+    > "$comment_file"
+cat >&2 "$comment_file"
+echo >&2 "==============================="
+
+assert_file_contains "$comment_file" ":rocket: PR Preview Site - My Partner"
+assert_file_contains "$comment_file" "](${preview_url})"
+
+echo >&2 "test comment: deployment without comment-header uses default format"
+echo >&2 "==============================="
+bash lib/generate-comment.sh \
+    "$action_repository" \
+    "$action_version" \
+    "$preview_url" \
+    "$preview_branch" \
+    "$server_url" \
+    "$deployment_repository" \
+    "$action_start_time" \
+    "deploy" \
+    "" \
+    "" \
+    "" \
+    > "$comment_file"
+cat >&2 "$comment_file"
+echo >&2 "==============================="
+
+assert_file_contains "$comment_file" "View preview at"
+
+echo >&2 "test comment: deployment with comment-message-suffix"
+echo >&2 "==============================="
+bash lib/generate-comment.sh \
+    "$action_repository" \
+    "$action_version" \
+    "$preview_url" \
+    "$preview_branch" \
+    "$server_url" \
+    "$deployment_repository" \
+    "$action_start_time" \
+    "deploy" \
+    "" \
+    "Check the staging environment" \
+    > "$comment_file"
+cat >&2 "$comment_file"
+echo >&2 "==============================="
+
+assert_file_contains "$comment_file" "Check the staging environment"
+assert_file_contains "$comment_file" "View preview at"
+
+echo >&2 "test comment: deployment with comment-header and comment-message-suffix"
+echo >&2 "==============================="
+bash lib/generate-comment.sh \
+    "$action_repository" \
+    "$action_version" \
+    "$preview_url" \
+    "$preview_branch" \
+    "$server_url" \
+    "$deployment_repository" \
+    "$action_start_time" \
+    "deploy" \
+    "" \
+    "Check the staging environment" \
+    "My Partner" \
+    > "$comment_file"
+cat >&2 "$comment_file"
+echo >&2 "==============================="
+
+assert_file_contains "$comment_file" ":rocket: PR Preview Site - My Partner"
+assert_file_contains "$comment_file" "Check the staging environment"
