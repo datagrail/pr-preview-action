@@ -116,7 +116,7 @@ jobs:
               run: |
                   echo "Action removal failed or was incomplete, performing manual cleanup..."
                   source test/lib/cleanup-test-deployment.sh
-                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${TEST_UMBRELLA_DIR}"
+                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${{ env.TEST_UMBRELLA_DIR }}"
 
     test-git-custom-umbrella:
         name: "[Git] Custom umbrella"
@@ -165,7 +165,7 @@ jobs:
               if: always()
               run: |
                   source test/lib/cleanup-test-deployment.sh
-                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${TEST_UMBRELLA_DIR}" "${CUSTOM_UMBRELLA_DIR}"
+                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${{ env.TEST_UMBRELLA_DIR }}" "${{ env.CUSTOM_UMBRELLA_DIR }}"
 
     test-git-concurrent:
         name: "[Git] Concurrency"
@@ -252,7 +252,7 @@ jobs:
               if: always()
               run: |
                   source test/lib/cleanup-test-deployment.sh
-                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${TEST_UMBRELLA_DIR}"
+                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${{ env.TEST_UMBRELLA_DIR }}"
 
     # Pages deployment test runs after git tests pass
     # This is the only test that uses the actual Pages branch and waits for deployment
@@ -329,4 +329,4 @@ jobs:
               run: |
                   echo "Action removal failed or was incomplete, performing manual cleanup..."
                   source test/lib/cleanup-test-deployment.sh
-                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${TEST_UMBRELLA_DIR}"
+                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${{ env.TEST_UMBRELLA_DIR }}"
