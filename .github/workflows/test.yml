@@ -29,7 +29,6 @@ jobs:
               with:
                   # For pull_request_target, checkout the PR head safely
                   ref: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.sha || github.ref }}
-                  persist-credentials: false
 
             - name: Run tests
               run: bash test/run-unit-tests.sh
