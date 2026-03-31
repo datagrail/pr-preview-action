@@ -204,8 +204,13 @@ runs:
               env.deployment_status == 'success'
           run: |
               source $GITHUB_ACTION_PATH/lib/wait-for-pages-deployment.sh
-              wait_for_pages_deployment "${{ inputs.deploy-repository }}" "${{ steps.deployed-commit.outputs.deployed_commit_sha }}" "${{ inputs.preview-branch }}" "${{ inputs.token }}"
+              wait_for_pages_deployment "${INPUTS_DEPLOY_REPOSITORY}" "${STEPS_DEPLOYED_COMMIT_OUTPUTS_DEPLOYED_COMMIT_SHA}" "${INPUTS_PREVIEW_BRANCH}" "${INPUTS_TOKEN}"
           shell: bash
+          env:
+            INPUTS_DEPLOY_REPOSITORY: ${{ inputs.deploy-repository }}
+            STEPS_DEPLOYED_COMMIT_OUTPUTS_DEPLOYED_COMMIT_SHA: ${{ steps.deployed-commit.outputs.deployed_commit_sha }}
+            INPUTS_PREVIEW_BRANCH: ${{ inputs.preview-branch }}
+            INPUTS_TOKEN: ${{ inputs.token }}
 
         - name: Generate comment content for deployment
           id: deploy-comment
@@ -215,23 +220,29 @@ runs:
               (env.deployment_status == 'success' || env.deployment_status == 'skipped')
           run: |
               CONTENT=$($GITHUB_ACTION_PATH/lib/generate-comment.sh \
-                "${{ env.action_repository }}" \
-                "${{ env.action_version }}" \
-                "${{ env.preview_url }}" \
-                "${{ inputs.preview-branch }}" \
+                "${ACTION_REPOSITORY}" \
+                "${ACTION_VERSION}" \
+                "${PREVIEW_URL}" \
+                "${INPUTS_PREVIEW_BRANCH}" \
                 "${{ github.server_url }}" \
-                "${{ inputs.deploy-repository }}" \
-                "${{ env.action_start_time }}" \
+                "${INPUTS_DEPLOY_REPOSITORY}" \
+                "${ACTION_START_TIME}" \
                 "deploy" \
-                "${{ inputs.qr-code }}" \
-                "${{ inputs.custom-message-suffix }}" \
-                "${{ inputs.custom-header }}")
+                "${INPUTS_QR_CODE}" \
+                "${INPUTS_CUSTOM_MESSAGE_SUFFIX}" \
+                "${INPUTS_CUSTOM_HEADER}")
               {
                 echo "content<<EOF"
                 echo "$CONTENT"
                 echo "EOF"
               } >> $GITHUB_OUTPUT
           shell: bash
+          env:
+            INPUTS_PREVIEW_BRANCH: ${{ inputs.preview-branch }}
+            INPUTS_DEPLOY_REPOSITORY: ${{ inputs.deploy-repository }}
+            INPUTS_QR_CODE: ${{ inputs.qr-code }}
+            INPUTS_CUSTOM_MESSAGE_SUFFIX: ${{ inputs.custom-message-suffix }}
+            INPUTS_CUSTOM_HEADER: ${{ inputs.custom-header }}
 
         - name: Leave a comment after deployment
           if: |
@@ -278,8 +289,13 @@ runs:
               env.deployment_status == 'success'
           run: |
               source $GITHUB_ACTION_PATH/lib/wait-for-pages-deployment.sh
-              wait_for_pages_deployment "${{ inputs.deploy-repository }}" "${{ steps.removed-commit.outputs.deployed_commit_sha }}" "${{ inputs.preview-branch }}" "${{ inputs.token }}"
+              wait_for_pages_deployment "${INPUTS_DEPLOY_REPOSITORY}" "${STEPS_REMOVED_COMMIT_OUTPUTS_DEPLOYED_COMMIT_SHA}" "${INPUTS_PREVIEW_BRANCH}" "${INPUTS_TOKEN}"
           shell: bash
+          env:
+            INPUTS_DEPLOY_REPOSITORY: ${{ inputs.deploy-repository }}
+            STEPS_REMOVED_COMMIT_OUTPUTS_DEPLOYED_COMMIT_SHA: ${{ steps.removed-commit.outputs.deployed_commit_sha }}
+            INPUTS_PREVIEW_BRANCH: ${{ inputs.preview-branch }}
+            INPUTS_TOKEN: ${{ inputs.token }}
 
         - name: Generate comment content for removal
           id: remove-comment
@@ -289,21 +305,24 @@ runs:
               (env.deployment_status == 'success' || env.deployment_status == 'skipped')
           run: |
               CONTENT=$($GITHUB_ACTION_PATH/lib/generate-comment.sh \
-                "${{ env.action_repository }}" \
-                "${{ env.action_version }}" \
-                "${{ env.preview_url }}" \
-                "${{ inputs.preview-branch }}" \
+                "${ACTION_REPOSITORY}" \
+                "${ACTION_VERSION}" \
+                "${PREVIEW_URL}" \
+                "${INPUTS_PREVIEW_BRANCH}" \
                 "${{ github.server_url }}" \
-                "${{ inputs.deploy-repository }}" \
-                "${{ env.action_start_time }}" \
+                "${INPUTS_DEPLOY_REPOSITORY}" \
+                "${ACTION_START_TIME}" \
                 "remove" \
-                "${{ env.qr_code_provider }}")
+                "${QR_CODE_PROVIDER}")
               {
                 echo "content<<EOF"
                 echo "$CONTENT"
                 echo "EOF"
               } >> $GITHUB_OUTPUT
           shell: bash
+          env:
+            INPUTS_PREVIEW_BRANCH: ${{ inputs.preview-branch }}
+            INPUTS_DEPLOY_REPOSITORY: ${{ inputs.deploy-repository }}
 
         - name: Leave a comment after removal
           if: |

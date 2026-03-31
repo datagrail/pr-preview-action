@@ -1,0 +1,43 @@
+rules:
+  # === ENABLED ===
+  unpinned-uses: {}
+  ref-version-mismatch: {}
+  unpinned-images: {}
+  secrets-inherit: {}
+  known-vulnerable-actions: {}
+  cache-poisoning: {}
+  github-env: {}
+  insecure-commands: {}
+  hardcoded-container-credentials: {}
+  obfuscation: {}
+  misfeature: {}
+  bot-conditions: {}
+  ref-confusion: {}
+  impostor-commit: {}
+  unredacted-secrets: {}
+  unsound-condition: {}
+  unsound-contains: {}
+  use-trusted-publishing: {}
+  forbidden-uses: {}
+  archived-uses: {}
+  dependabot-execution: {}
+  dependabot-cooldown: {}
+  concurrency-limits: {}
+  overprovisioned-secrets: {}
+
+  # === DISABLED (have findings, need dedicated work) ===
+  artipacked: {}
+
+  # 5 finding(s)
+  excessive-permissions:
+    disable: true
+  template-injection: {}
+
+  # 20 finding(s)
+  secrets-outside-env:
+    disable: true
+
+  # 1 finding(s)
+  dangerous-triggers:
+    disable: true
+  superfluous-actions: {}

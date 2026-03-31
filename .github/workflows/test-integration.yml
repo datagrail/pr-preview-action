@@ -27,9 +27,10 @@ jobs:
             TEST_DEPLOY_REPO: rozzjrw/pr-preview-action-testing
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
               with:
                   ref: ${{ inputs.sha }}
+                  persist-credentials: false
 
             - name: Modify fixture
               run: sed -i.bak 's/<p id="testid">.*<\/p>/<p id="testid">${{ env.TEST_ID }}-INITIALISED<\/p>/' test/fixtures/html/index.html
@@ -116,7 +117,7 @@ jobs:
               run: |
                   echo "Action removal failed or was incomplete, performing manual cleanup..."
                   source test/lib/cleanup-test-deployment.sh
-                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${{ env.TEST_UMBRELLA_DIR }}"
+                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${TEST_UMBRELLA_DIR}"
 
     test-git-custom-umbrella:
         name: "[Git] Custom umbrella"
@@ -128,9 +129,10 @@ jobs:
             TEST_DEPLOY_REPO: rozzjrw/pr-preview-action-testing
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
               with:
                   ref: ${{ inputs.sha }}
+                  persist-credentials: false
 
             - name: Modify fixture
               run: sed -i 's/<p id="testid">.*<\/p>/<p id="testid">${{ env.TEST_ID }}<\/p>/' test/fixtures/html/index.html
@@ -165,7 +167,7 @@ jobs:
               if: always()
               run: |
                   source test/lib/cleanup-test-deployment.sh
-                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${{ env.TEST_UMBRELLA_DIR }}" "${{ env.CUSTOM_UMBRELLA_DIR }}"
+                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${TEST_UMBRELLA_DIR}" "${CUSTOM_UMBRELLA_DIR}"
 
     test-git-concurrent:
         name: "[Git] Concurrency"
@@ -176,9 +178,10 @@ jobs:
             TEST_DEPLOY_REPO: rozzjrw/pr-preview-action-testing
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
               with:
                   ref: ${{ inputs.sha }}
+                  persist-credentials: false
 
             - name: Modify fixture
               run: sed -i.bak 's/<p id="testid">.*<\/p>/<p id="testid">${{ env.TEST_ID }}-1<\/p>/' test/fixtures/html/index.html
@@ -252,7 +255,7 @@ jobs:
               if: always()
               run: |
                   source test/lib/cleanup-test-deployment.sh
-                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${{ env.TEST_UMBRELLA_DIR }}"
+                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${TEST_UMBRELLA_DIR}"
 
     # Pages deployment test runs after git tests pass
     # This is the only test that uses the actual Pages branch and waits for deployment
@@ -268,9 +271,10 @@ jobs:
             TEST_DEPLOY_REPO_BRANCH: main
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
               with:
                   ref: ${{ inputs.sha }}
+                  persist-credentials: false
 
             - name: Modify fixture
               run: sed -i.bak 's/<p id="testid">.*<\/p>/<p id="testid">${{ env.TEST_ID }}<\/p>/' test/fixtures/html/index.html
@@ -329,4 +333,4 @@ jobs:
               run: |
                   echo "Action removal failed or was incomplete, performing manual cleanup..."
                   source test/lib/cleanup-test-deployment.sh
-                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${{ env.TEST_UMBRELLA_DIR }}"
+                  cleanup_deployment "${{ env.TEST_DEPLOY_REPO }}" "${{ env.TEST_ID }}" "${{ secrets.test-deploy-token }}" "${TEST_UMBRELLA_DIR}"
