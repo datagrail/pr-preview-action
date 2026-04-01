@@ -9,3 +9,5 @@ updates:
     commit-message:
       prefix: "[DAT-15011] [gha]"
       include: "scope"
+    cooldown:
+      default-days: 7
