@@ -1,5 +1,4 @@
 rules:
-  # === ENABLED ===
   unpinned-uses: {}
   ref-version-mismatch: {}
   unpinned-images: {}
@@ -24,22 +23,14 @@ rules:
   dependabot-cooldown: {}
   concurrency-limits: {}
   overprovisioned-secrets: {}
-
-  # === DISABLED (have findings, need dedicated work) ===
-  artipacked:
-    disable: true
-
-  # 5 finding(s)
-  excessive-permissions:
-    disable: true
-  template-injection:
-    disable: true
-
-  # 20 finding(s)
   secrets-outside-env:
     disable: true
-
-  # 1 finding(s)
   dangerous-triggers:
     disable: true
   superfluous-actions: {}
+  template-injection:
+    disable: true
+  excessive-permissions:
+    disable: true
+  artipacked:
+    disable: true
